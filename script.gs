@@ -12,6 +12,7 @@ function onFormSubmit(e) {
   var timestamp, nama, noHP, email;
 
   // Fungsi helper untuk mengambil nilai dari array atau objek dengan aman
+
   function safeGet(obj, key, defaultValue = '') {
     if (obj && obj[key]) {
       return Array.isArray(obj[key]) ? obj[key][0] : obj[key];
@@ -22,9 +23,9 @@ function onFormSubmit(e) {
   if (e && e.namedValues) {
     // Jika dipanggil dari form submission
     timestamp = safeGet(e.namedValues, 'Timestamp', new Date().toString());
-    nama = safeGet(e.namedValues, 'nama');
-    noHP = safeGet(e.namedValues, 'no hp');
-    email = safeGet(e.namedValues, 'email');
+    nama = safeGet(e.namedValues, 'Nama Lengkap ');
+    noHP = safeGet(e.namedValues, 'Nomor WhatsApp ');
+    email = safeGet(e.namedValues, 'Alamat Email ');
   } else {
     // Jika dipanggil dari spreadsheet atau trigger lain
     timestamp = data[0] ? data[0].toString() : new Date().toString();
@@ -52,9 +53,9 @@ function onFormSubmit(e) {
 }
 
 function sendWhatsAppMessage(timestamp, nama, noHP, email) {
-  var url = ''; // Masukkan URL WhatsApp API Anda di sini
-  var apiKey = ''; // Masukkan API key Anda di sini
-  var sender = ''; // Masukkan nomor pengirim Anda di sini
+  var url = 'https://xx/send-message';// Masukkan URL WhatsApp API Anda di sini
+  var apiKey = 'xxx';// Masukkan API key Anda di sini
+  var sender = '62xxx';// Masukkan nomor pengirim Anda di sini
 
   var message = "Halo " + nama + ",\n\n" +
                 "Terima kasih telah mengisi formulir Google kami pada " + timestamp + ". Berikut adalah data yang Anda isi:\n" +
@@ -93,8 +94,16 @@ function sendEmail(timestamp, nama, noHP, email) {
              "Kami akan segera menghubungi Anda untuk informasi lebih lanjut.\n\n" +
              "Salam,\nTim Komunitas Inovator Digital";
 
+  try {
+    GmailApp.sendEmail(email, subject, body, {name: "Contoh Email"});
+    Logger.log('Email berhasil dikirim ke ' + email);
+  } catch(error) {
+    Logger.log('Gagal mengirim email: ' + error);
+  }
+}
+
 function setupTrigger() {
-  var ss = SpreadsheetApp.openById('ID SPREADSHEET');// Masukkan ID GOOGLE Spreadsheet Anda di sini
+  var ss = SpreadsheetApp.openById('');// Masukkan ID Spreadsheet di sini
   ScriptApp.newTrigger('onFormSubmit')
     .forSpreadsheet(ss)
     .onFormSubmit()
