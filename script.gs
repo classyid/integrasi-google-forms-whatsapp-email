@@ -92,3 +92,11 @@ function sendEmail(timestamp, nama, noHP, email) {
              "Email: " + email + "\n\n" +
              "Kami akan segera menghubungi Anda untuk informasi lebih lanjut.\n\n" +
              "Salam,\nTim Komunitas Inovator Digital";
+
+function setupTrigger() {
+  var ss = SpreadsheetApp.openById('ID SPREADSHEET');// Masukkan ID GOOGLE Spreadsheet Anda di sini
+  ScriptApp.newTrigger('onFormSubmit')
+    .forSpreadsheet(ss)
+    .onFormSubmit()
+    .create();
+}
